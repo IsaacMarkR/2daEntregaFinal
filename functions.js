@@ -1,38 +1,50 @@
-// Creamos un array para almacenar los valores ingresados por el usuario.
+// Capturamos los elementos del HTML.
+const numeroInput = document.getElementById("numeroInput");
+const agregarNumeroButton = document.getElementById("agregarNumero");
+const valoresIngresadosElement = document.getElementById("valoresIngresados");
+const sumaElement = document.getElementById("suma");
+const restaElement = document.getElementById("resta");
+const multiplicacionElement = document.getElementById("multiplicacion");
+const divisionElement = document.getElementById("division");
+
+// Array para almacenar los números ingresados.
 let numeros = [];
 
-// Creamos un bucle para capturar entradas dinámicamente.
-while (true) {
-    let entrada = prompt("Ingrese un número o escriba 'fin' para detenerse:");
+// Evento al hacer clic en el botón "Agregar".
+agregarNumeroButton.addEventListener("click", function () {
+    // Obtenemos el valor del input.
+    const valor = parseFloat(numeroInput.value);
 
-    // Verificamos si el usuario quiere detenerse.
-    if (entrada === 'fin' || entrada === null) {
-        break;
+    // Verificamos si la entrada es un número válido.
+    if (isNaN(valor)) {
+        alert("Ingrese un número válido.");
+        return;
     }
 
-    // Convertimos la entrada a un número de punto flotante y la agregamos al array.
-    let numero = parseFloat(entrada);
+    // Agregamos el número al array.
+    numeros.push(valor);
 
-    // Verificamos si la conversión fue exitosa antes de agregarlo al array.
-    if (!isNaN(numero)) {
-        numeros.push(numero);
-    } else {
-        alert("Entrada inválida. Por favor, ingrese un número válido.");
+    // Mostramos los valores ingresados en el HTML.
+    valoresIngresadosElement.textContent = `Valores ingresados: ${numeros.join(', ')}`;
+    numeroInput.value = ""; // Limpiamos el input.
+
+    // Calculamos y mostramos los resultados.
+    calcularResultados();
+});
+
+// Función para calcular y mostrar los resultados.
+function calcularResultados() {
+    if (numeros.length === 0) {
+        return;
     }
-}
 
-// Realizamos las operaciones con los valores almacenados en el array.
-if (numeros.length === 0) {
-    alert("No se ingresaron números.");
-} else {
-    let suma = numeros.reduce((a, b) => a + b);
-    let resta = numeros.reduce((a, b) => a - b);
-    let multiplicacion = numeros.reduce((a, b) => a * b);
-    let division = numeros.reduce((a, b) => a / b);
+    const suma = numeros.reduce((a, b) => a + b);
+    const resta = numeros.reduce((a, b) => a - b);
+    const multiplicacion = numeros.reduce((a, b) => a * b);
+    const division = numeros.reduce((a, b) => a / b);
 
-    console.log("Valores ingresados: " + numeros.join(', '));
-    console.log("Suma: " + suma);
-    console.log("Resta: " + resta);
-    console.log("Multiplicación: " + multiplicacion);
-    console.log("División: " + division);
+    sumaElement.textContent = `Suma: ${suma}`;
+    restaElement.textContent = `Resta: ${resta}`;
+    multiplicacionElement.textContent = `Multiplicación: ${multiplicacion}`;
+    divisionElement.textContent = `División: ${division}`;
 }
